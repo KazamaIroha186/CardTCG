@@ -1,0 +1,121 @@
+/* LOGIN */
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    
+    .loginContainer,
+    .signupContainer,
+    .imageContainer {
+      width: 100% !important;
+    }
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .text {
+    color: #000000;
+    font-size: 45px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .signup {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 200;
+    margin-bottom: 20px;
+  }  
+  /* Login section styling */
+  .loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%; 
+    padding: 20px;
+  }
+  
+  .loginContainer input{
+    width: 400px;
+    height: 34px;
+    border-radius: 30px;
+    border: none;
+    margin: 10px;
+    padding-left: 20px;
+  }
+  
+  .loginContainer input {
+    border: 2px solid rgb(0, 0, 0);
+  }
+  
+  .loginContainer button {
+    width: 250px;
+    height: 50px;
+    border-radius: 30px;
+    border: none;
+    margin: 10px;
+  }
+  
+  .loginContainer button {
+    background-color: #000000;
+    color: white;
+    font-size: 25px;
+  }
+  
+  .loginContainer input[type="checkbox"] {
+    width: auto; 
+    height: auto; 
+    margin-right: 5px;
+  }
+  
+  .loginContainer .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 350px;
+    margin-top: 10px;
+  }
+  
+  .loginContainer .remember-forgot label {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+  
+  .loginContainer .forgot-password {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .loginContainer .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  /* Image section styling */
+  .imageContainer {
+    width: 50%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+  }
+  
+  .imageContainer img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
