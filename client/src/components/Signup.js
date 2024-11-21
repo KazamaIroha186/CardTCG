@@ -1,9 +1,13 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Navigate, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
+import "./Signup.css";
 
 function Signup() {
+  const navigate = useNavigate();
+  
   const initialValues = {
     email: "",
     username: "",
@@ -19,6 +23,11 @@ function Signup() {
   const onSubmit = (data) => {
     axios.post("http://localhost:3001/auth", data).then(() => {
       console.log(data);
+
+      navigate("/login");
+    }).catch((error) => {
+      console.error("Error during signup:", error);
+      alert("Signup failed! Please try again.");
     });
   };
 
@@ -61,9 +70,7 @@ function Signup() {
         </Formik>
       </div>
 
-      <div className="imageContainer">
-        <img src="E:/Project/Card.jpg" alt="Signup Visual" />
-      </div>
+      <div className="imageContainer"></div>
     </div>
   );
 }

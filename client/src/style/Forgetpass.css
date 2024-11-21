@@ -1,0 +1,84 @@
+/* Container styles */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.text {
+  color: #000000;
+  font-size: 45px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.forget-password-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 1rem;
+  }
+  
+  /* Title styles */
+  .forget-password-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  /* Form styles */
+  .forget-password-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Form group styles */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  .form-input {
+    width: 95%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    font-size: 1rem;
+  }
+  
+  /* Button styles */
+  .form-button {
+    width: 80%;
+    padding: 0.5rem;
+    margin: auto;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .form-button:hover {
+    background-color: #93979b;
+  }
+  
+  .button-disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Message styles */
+  .form-message {
+    margin-top: 1rem;
+    text-align: center;
+    color: #333;
+  }
+  
