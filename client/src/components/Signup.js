@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Navigate, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
-import "./Signup.css";
+import './style/Signup.css';
 
 function Signup() {
   const navigate = useNavigate();

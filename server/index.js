@@ -10,6 +10,8 @@ const db = require('./models')
 //Routes
 const postRoutes = require('./routes/Posts');
 app.use('/posts', postRoutes);
+const cardRoutes = require('./routes/cards');
+app.use('/cards', cardRoutes);
 const userRoutes = require('./routes/Users');
 app.use('/auth', userRoutes);
 
