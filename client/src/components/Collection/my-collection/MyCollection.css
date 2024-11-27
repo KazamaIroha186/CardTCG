@@ -1,0 +1,109 @@
+.card {
+  width: 100%;
+  max-width: 180px;
+  margin: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+.card-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-bottom: 2px solid #ddd;
+}
+.card-info {
+  padding: 10px;
+  text-align: center;
+}
+.card-name {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 5px 0;
+}
+.card-rarity,
+.card-type {
+  font-size: 0.875rem;
+  color: #555;
+  margin: 5px 0;
+}
+.quantity-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+.quantity-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.quantity-button:disabled {
+  background-color: #ccc;
+}
+.quantity {
+  font-size: 1.1rem;
+  margin: 5px;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .card {
+    max-width: 150px;
+  }
+  .main-content {
+    margin-left: 0;
+    padding-top: 80px;
+  }
+  .sidebar {
+    display: none;
+  }
+}
+@media (min-width: 1024px) {
+  .card {
+    max-width: 200px;
+  }
+}
+.search-container {
+  margin-bottom: 20px;
+}
+.filter-container {
+  margin-bottom: 20px;
+}
+.filter-select {
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.card-grid {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+.card-grid p {
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
+  margin: 6px 0;
+}

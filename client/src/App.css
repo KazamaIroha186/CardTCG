@@ -1,132 +1,137 @@
 .App {
-  width: 100vw;
-  height: auto;
   display: flex;
-  align-items: center;
-  flex-direction: column;
-  font-family: nunito;
+  min-height: 100vh;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Nunito';
+/* Add padding-top to account for fixed navbar */
+.main-content {
+  flex: 1;
+  margin-left: 200px; /* Match sidebar width */
+  padding: 70px 20px 20px; /* Top padding for navbar + content padding */
+  box-sizing: border-box;
 }
-/* NAVBAR */
 
-.navbar {
+/* Ensure container stays within main-content boundaries */
+.container {
   width: 100%;
-  height: 70px;
-  background-color: rgb(0, 0, 0);
-  display: flex;
-  align-items: center;
-  font-family: 'Nunito';
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.navbar a {
-  margin-left: 20px;
-  text-decoration: none;
-  color: white;
-}
-
-/* Responsive container */
+/* Ensure proper layout for main content and aside */
 .container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   width: 100%;
-  min-height: 100vh;
-  background-color: #f0f0f0;
 }
 
+.main-content {
+  flex: 1 1 70%; /* Main content takes 70% of the width */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.aside {
+  flex: 0 1 25%; /* Aside takes 25% of the width */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* If you want to stack content vertically on smaller screens */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
   }
-  
-  .loginContainer,
-  .signupContainer,
-  .imageContainer {
-    width: 100% !important;
+
+  .main-content,
+  .aside {
+    flex: 1 1 100%; /* Both sections take 100% width */
   }
 }
 
-/* Common styles for both login and signup */
-.loginContainer,
-.signupContainer {
+/* The card grid and other styles for responsiveness */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.card {
+  max-width: 180px;
+  margin: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  border-bottom: 2px solid #ddd;
+}
+
+.card-info {
+  padding: 10px;
+  text-align: center;
+}
+
+.card-name {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.card-rarity,
+.card-type {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.quantity-control {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  width: 50%;
-  padding: 20px;
-}
-
-/* Form styling */
-.formContainer {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 400px;
+  margin-top: 10px;
 }
 
-.inputField {
-  width: 100%;
-  max-width: 400px;
-  height: 34px;
-  border-radius: 30px;
-  border: 2px solid rgb(0, 0, 0);
-  margin: 10px;
-  padding-left: 20px;
-  box-sizing: border-box;
-}
-
-@media (max-width: 480px) {
-  .inputField {
-    width: 90%;
-  }
-}
-
-/* Error message styling */
-.errorMessage {
-  color: red;
-  font-size: 14px;
-  margin-bottom: 5px;
-  align-self: flex-start;
-  margin-left: 20px;
-}
-
-/* Button styling */
-.submitButton {
-  width: 250px;
-  height: 50px;
-  border-radius: 30px;
-  border: none;
-  margin: 10px;
-  background-color: #000000;
+.quantity-button {
+  background-color: #000;
   color: white;
-  font-size: 25px;
+  border: none;
+  padding: 5px 10px;
+  margin: 0 5px;
+  border-radius: 50%;
   cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .submitButton {
-    width: 200px;
+.quantity-button:disabled {
+  background-color: #ccc;
+}
+
+.quantity {
+  font-size: 1.1rem;
+  margin: 0 5px;
+}
+
+.search-container {
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.filter-select {
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Additional spacing for larger screens */
+@media (min-width: 1024px) {
+  .card {
+    max-width: 200px; /* Larger cards for bigger screens */
   }
-}
-
-/* Image container */
-.imageContainer {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #e0e0e0;
-  overflow: hidden;
-}
-
-.imageContainer img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
 }
