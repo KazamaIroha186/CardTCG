@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import './HomepageUnAuth.css';
+import axios from 'axios';
 
 function Card({ card, onCardClick, onIncrement, onDecrement }) {
   return (
-
-    //card attribute: name la cardName, rarity la cardRarity, type la cardType
     <div className="card">
       <img 
         src={card.image} 
-        alt={card.name} 
+        alt={card.cardName} 
         className="card-image" 
         onClick={() => onCardClick(card)} 
       />
       <div className="card-info">
-        <h3 className="card-name">{card.name}</h3>
-        <p className="card-rarity">Rarity: {card.rarity}</p>
-        <p className="card-type">Type: {card.type}</p>
+        <h3 className="card-name">{card.cardName}</h3>
+        <p className="card-rarity">Rarity: {card.cardRarity}</p>
+        <p className="card-type">Type: {card.cardType}</p>
       </div>
       <div className="quantity-control">
         <button className="quantity-button" onClick={() => onDecrement(card)}>-</button>
-        <span className="quantity">{card.quantity}</span>
+        <span className="quantity">{card.quantity || 0}</span>
         <button className="quantity-button" onClick={() => onIncrement(card)}>+</button>
       </div>
     </div>
@@ -28,60 +27,67 @@ function Card({ card, onCardClick, onIncrement, onDecrement }) {
 }
 
 function HomePage() {
-  const navigate = useNavigate();  // Hook for navigation
-  const [cards, setCards] = useState([
-    { name: 'Dragon Slayer', rarity: 'Rare', type: 'Monster', image: 'https://via.placeholder.com/150', quantity: 0 },
-    { name: 'Healing Potion', rarity: 'Common', type: 'Spell', image: 'https://via.placeholder.com/150', quantity: 0 },
-    { name: 'Fireball', rarity: 'Uncommon', type: 'Spell', image: 'https://via.placeholder.com/150', quantity: 0 },
-    { name: 'Ancient Warrior', rarity: 'Epic', type: 'Monster', image: 'https://via.placeholder.com/150', quantity: 0 },
-    { name: 'Shield', rarity: 'Common', type: 'Item', image: 'https://via.placeholder.com/150', quantity: 0 },
-    { name: 'Thunder Strike', rarity: 'Rare', type: 'Spell', image: 'https://via.placeholder.com/150', quantity: 0 },
-    { name: 'Fire Dragon', rarity: 'Epic', type: 'Monster', image: 'https://via.placeholder.com/150', quantity: 0 },
-  ]);
-
-  // const [cards,setCards] = useState([]);
-  // useEffect(
-  //   () => {
-  //     axios.get(/*api cards*/).then((response) => {
-  //       setListOfCards(response.data);
-  //     });
-  //   },
-  // )
-
+  const navigate = useNavigate();
+  const [cards, setCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('');  // For additional filters
+  const [filter, setFilter] = useState('');
 
-  // Load cards from localStorage on initial render
+  useEffect(() => {
+    axios.get('http://localhost:8080/cards')
+      .then((response) => {
+        console.log(response.data);
+        setCards(response.data.map(card => ({ ...card, quantity: 0 })));
+      })
+      .catch((error) => {
+        console.error('Error fetching cards:', error);
+      });
+  }, []);
+
   useEffect(() => {
     const savedCards = localStorage.getItem('cardCollection');
     if (savedCards) {
-      setCards(JSON.parse(savedCards));
+      const parsedCards = JSON.parse(savedCards);
+      setCards(prevCards => 
+        prevCards.map(card => ({
+          ...card,
+          quantity: parsedCards.find(c => c.cardName === card.cardName)?.quantity || 0
+        }))
+      );
     }
   }, []);
 
   const handleIncrement = (card) => {
-    const updatedCards = cards.map((c) =>
-      c.name === card.name ? { ...c, quantity: c.quantity + 1 } : c
-    );
-    setCards(updatedCards);
-    localStorage.setItem('cardCollection', JSON.stringify(updatedCards));
+
+    const user = JSON.parse(localStorage.getItem('user-login'));
+    
+    axios.post('http://localhost:8080/mycollections', { cardID: card.id, userID: user.userID })
+      .then((response) => {
+        const updatedCards = cards.map((c) =>
+          c.id === card.id ? { ...c, quantity: (c.quantity || 0) + 1 } : c
+        );
+        setCards(updatedCards);
+        localStorage.setItem('cardCollection', JSON.stringify(updatedCards));
+      })
+      .catch((error) => {
+        console.error('Error incrementing card quantity:', error);
+      });
   };
 
   const handleDecrement = (card) => {
     const updatedCards = cards.map((c) =>
-      c.name === card.name && c.quantity > 0 ? { ...c, quantity: c.quantity - 1 } : c
+      c.cardName === card.cardName && c.quantity > 0 ? { ...c, quantity: c.quantity - 1 } : c
     );
     setCards(updatedCards);
     localStorage.setItem('cardCollection', JSON.stringify(updatedCards));
   };
 
   const handleCardClick = (card) => {
-    navigate(`/cards/${card.name}`); // Navigate to the card's page when clicked
+    navigate('/cards/${card.cardName}');
   };
 
   const filteredCards = cards.filter((card) =>
-    card.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (filter ? card.rarity === filter : true)
+    card.cardName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (filter ? card.cardRarity === filter : true)
   );
 
   return (
@@ -99,7 +105,6 @@ function HomePage() {
             />
           </div>
 
-          {/* Filter section */}
           <div className="filter-container">
             <select
               className="filter-select"
@@ -118,7 +123,7 @@ function HomePage() {
             {filteredCards.length > 0 ? (
               filteredCards.map((card, index) => (
                 <Card 
-                  key={index} 
+                  key={card.cardName} 
                   card={card} 
                   onCardClick={handleCardClick} 
                   onIncrement={handleIncrement} 
@@ -135,4 +140,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default HomePage

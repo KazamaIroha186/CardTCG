@@ -8,6 +8,7 @@ import Login from './components/Account/Login';
 import Signup from './components/Account/Signup';
 import ForgetPassword from './components/Account/Forgetpass';
 import MyCollection from './components/Collection/my-collection/MyCollection';
+import Decks from './components/Collection/decks/Decks';
 import NewDeck from './components/Collection/decks/NewDeck';
 import Cards from './components/Card/Cards';
 import NavbarUnauth from './components/Navbar/Navbar';
@@ -35,6 +36,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgetpass" element={<ForgetPassword />} />
             <Route path="/mycollections" element={<MyCollection />} />
+            <Route path="/decks" element={<Decks/>} />
             <Route path="/newdeck" element={<NewDeck/>} />
             <Route path="/cards" element={<Cards/>} />
           </Routes>

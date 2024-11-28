@@ -1,0 +1,103 @@
+/* General container styling */
+.decks-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding-top: 20px;
+    /* Ensures content starts below the navbar */
+}
+
+/* Header Styling */
+h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Search bar and New Deck button container */
+.header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+
+.new-deck-button {
+    padding: 8px 15px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.new-deck-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Table Styling */
+.deck-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.deck-table th,
+.deck-table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.deck-table th {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.deck-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.deck-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Buttons inside Action column */
+.edit-button,
+.delete-button {
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.edit-button i {
+  color: black;
+}
+
+.delete-button i {
+  color: red;
+}
+
+.edit-button:hover i {
+  color: #007bff;
+}
+
+.delete-button:hover i {
+  color: darkred;
+}
+
+.decks-container {
+    padding-top: 10px;
+    /* Adds enough space below the navbar */
+}

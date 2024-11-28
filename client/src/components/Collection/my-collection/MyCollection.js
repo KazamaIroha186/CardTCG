@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MyCollection.css';
+import axios from 'axios';
 
 function Card({ card, onCardClick }) {
   return (
     <div className="card">
       <img 
         src={card.image} 
-        alt={card.name} 
+        alt={card.cardName} // Corrected attribute from cardName to name
         className="card-image" 
         onClick={() => onCardClick(card)} 
       />
       <div className="card-info">
-        <h3 className="card-name">{card.name}</h3>
-        <p className="card-rarity">Rarity: {card.rarity}</p>
-        <p className="card-type">Type: {card.type}</p>
+        <h3 className="card-name">{card.cardName}</h3> 
+        <p className="card-rarity">Rarity: {card.cardRarity}</p> 
+        <p className="card-type">Type: {card.cardType}</p> 
         <p className="card-quantity">Owned: {card.quantity}</p>
       </div>
     </div>
@@ -26,36 +27,28 @@ function MyCollection() {
   const [cards, setCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('');
-
-  // Load cards from localStorage whenever it changes
   useEffect(() => {
-    const loadCards = () => {
-      const savedCards = localStorage.getItem('cardCollection');
-      if (savedCards) {
-        setCards(JSON.parse(savedCards));
-      }
-    };
-
-    loadCards();
-
-    // Add event listener for storage changes
-    window.addEventListener('storage', loadCards);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('storage', loadCards);
-    };
+    const user = JSON.parse(localStorage.getItem('user-login'));
+    if (user) {
+      axios.get(`http://localhost:8080/mycollections/yourcards/${user.userID}`)
+      .then((response) => {
+        setCards(response.data.map(card => ({ ...card })));
+      })
+      .catch((error) => {
+        console.error('Error fetching cards:', error);
+      });
+    }
   }, []);
 
   const handleCardClick = (card) => {
-    navigate(`/cards/${card.name}`);
+    navigate(`/cards/${card.card.cardName}`); // Corrected attribute from card.name to card.name
   };
 
-  const filteredCards = cards.filter((card) =>
-    card.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (filter ? card.rarity === filter : true) &&
-    card.quantity > 0 // Only show cards that the user owns
-  );
+  // const filteredCards = cards.filter((card) =>
+  //   card.cardName.includes(searchTerm) && 
+  //   (filter ? card.cardRarity === filter : true) && 
+  //   card.quantity > 0 // Only show cards that the user owns
+  // );
 
   return (
     <div className="App">
@@ -85,13 +78,12 @@ function MyCollection() {
               <option value="Epic">Epic</option>
             </select>
           </div>
-
           <div className="card-grid">
-            {filteredCards.length > 0 ? (
-              filteredCards.map((card, index) => (
+            {cards.length > 0 ? (
+              cards.map((card) => (
                 <Card 
-                  key={index} 
-                  card={card} 
+                  key={card.card} 
+                  card={card.card} 
                   onCardClick={handleCardClick}
                 />
               ))
