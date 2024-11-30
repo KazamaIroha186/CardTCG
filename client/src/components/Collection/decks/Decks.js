@@ -1,36 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Deck.css';
-
 
 function Decks() {
   const navigate = useNavigate();
-  const [decks, setDecks] = useState([
-    { id: 1, name: "Deck_name", amount: 69, date: "20/10/2020" },
-    { id: 2, name: "Deck_name", amount: 69, date: "20/10/2020" },
-    { id: 3, name: "Deck_name", amount: 69, date: "20/10/2020" },
-    { id: 4, name: "Deck_name", amount: 69, date: "20/10/2020" },
-  ]);
+  const [decks, setDecks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    fetchDecks();
+  }, []);
+
+  const fetchDecks = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/decks/all');
+      setDecks(response.data);
+    } catch (error) {
+      console.error('Error fetching decks:', error);
+    }
+  };
 
   const handleNewDeck = () => {
     navigate("/newdeck");
   };
 
   const handleEditDeck = (id) => {
-    console.log(`Edit deck with ID: ${id}`);
-    // Add edit deck logic here
+    navigate(`/deck/${id}/edit`);
   };
 
-  const handleDeleteDeck = (id) => {
-    const updatedDecks = decks.filter((deck) => deck.id !== id);
-    setDecks(updatedDecks);
+  const handleDeleteDeck = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/decks/${id}`);
+      // Refresh decks after deletion
+      fetchDecks();
+    } catch (error) {
+      console.error('Error deleting deck:', error);
+    }
   };
+
+  const filteredDecks = decks.filter(deck =>
+    deck.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="decks-container">
       <h1>Decks</h1>
       <div className="header-controls">
-        <input type="text" placeholder="Search..." className="search-input" />
+        <input 
+          type="text" 
+          placeholder="Search..." 
+          className="search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <button className="new-deck-button" onClick={handleNewDeck}>
           New deck
         </button>
@@ -45,7 +68,7 @@ function Decks() {
           </tr>
         </thead>
         <tbody>
-          {decks.map((deck) => (
+          {filteredDecks.map((deck) => (
             <tr key={deck.id}>
               <td>{deck.name}</td>
               <td>{deck.amount}</td>
