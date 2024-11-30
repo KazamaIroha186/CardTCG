@@ -33,7 +33,7 @@ function HomePage() {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8080/cards')
+    axios.get('https://tcg-collection.onrender.com/cards')
       .then((response) => {
         console.log(response.data);
         setCards(response.data.map(card => ({ ...card, quantity: 0 })));
@@ -60,7 +60,7 @@ function HomePage() {
 
     const user = JSON.parse(localStorage.getItem('user-login'));
     
-    axios.post('http://localhost:8080/mycollections', { cardID: card.id, userID: user.userID })
+    axios.post('https://tcg-collection.onrender.com/mycollections', { cardID: card.id, userID: user.userID })
       .then((response) => {
         const updatedCards = cards.map((c) =>
           c.id === card.id ? { ...c, quantity: (c.quantity || 0) + 1 } : c

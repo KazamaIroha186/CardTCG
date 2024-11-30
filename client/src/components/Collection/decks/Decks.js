@@ -14,24 +14,39 @@ function Decks() {
 
   const fetchDecks = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/decks/all');
+      const response = await axios.get('https://tcg-collection.onrender.com/decks');
       setDecks(response.data);
     } catch (error) {
       console.error('Error fetching decks:', error);
     }
   };
 
-  const handleNewDeck = () => {
-    navigate("/newdeck");
+  const handleNewDeck = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem('user-login'));
+      const response = await axios.post('https://tcg-collection.onrender.com/decks/create', {
+        userID: user.userID
+      });
+      navigate(`/newdeck/${response.data.deckID}`);
+    } catch (error) {
+      console.error('Error creating new deck:', error);
+    }
   };
 
-  const handleEditDeck = (id) => {
-    navigate(`/deck/${id}/edit`);
+  const handleEditDeck = async (id) => {
+    try {
+      const response = await axios.get(`https://tcg-collection.onrender.com/decks/${id.deckID}/edit`);
+      if (response.data) {
+        navigate(`/deck/${id}/edit`);
+      }
+    } catch (error) {
+      console.error('Error accessing deck:', error);
+    }
   };
 
   const handleDeleteDeck = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/decks/${id}`);
+      await axios.delete(`https://tcg-collection.onrender.com/decks/${id.deckID}/delete`);
       // Refresh decks after deletion
       fetchDecks();
     } catch (error) {
@@ -39,6 +54,33 @@ function Decks() {
     }
   };
 
+  const addCardToDeck = async (deckId, cardId) => {
+    try {
+      const response = await axios.post('https://tcg-collection.onrender.com/decks/cards/add', {
+        deckID: deckId,
+        cardID: cardId
+      });
+      if (response.data.success) {
+        // Refresh decks to show updated card count
+        fetchDecks();
+      }
+    } catch (error) {
+      console.error('Error adding card to deck:', error);
+    }
+  };
+
+  const removeCardFromDeck = async (deckId, cardId) => {
+    try {
+      const response = await axios.delete(`https://tcg-collection.onrender.com/decks/${deckId}/cards/${cardId}`);
+      if (response.data.success) {
+        // Refresh decks to show updated card count
+        fetchDecks();
+      }
+    } catch (error) {
+      console.error('Error removing card from deck:', error);
+    }
+  };
+  
   const filteredDecks = decks.filter(deck =>
     deck.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
