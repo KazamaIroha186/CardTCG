@@ -16,30 +16,30 @@ function Login() {
   const navigate = useNavigate();
   
   const initialValues = {
-    username: "",
+    email: "",
     password: "",
   };
 
   const validationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
+    email: Yup.string().email("Invalid email format").required("Email is required"),
     password: Yup.string().required("Password is required"),
   });
 
   const onSubmit = (data) => {
-    localStorage.setItem("user-login", true);
-    setLogin(true);
-    navigate("/home");
-    // axios.post("http://localhost:3001/auth/login", data).then((response) => {
-    //   if (response.data.success) {
-    //     setLogin(true);
-    //     navigate("/home");
-    //   } else {
-    //     alert("Login failed! Please check your credentials.");
-    //   }
-    // }).catch((error) => {
-    //   console.error("Error during login:", error);
-    //   alert("An error occurred during login.");
-    // });
+    axios.post("http://localhost:8080/users/login", data).then((response) => {
+      console.log(response.data)
+      if (response.data) {
+        localStorage.setItem("user-login", JSON.stringify(response.data));
+        setLogin(true);
+        navigate("/home");
+
+      } else {
+        alert("Login failed! Please check your credentials.");
+      }
+    }).catch((error) => {
+      console.error("Error during login:", error);
+      alert("An error occurred during login.");
+    });
   };
 
   return (
@@ -56,11 +56,12 @@ function Login() {
           >
             <Form className="auth-form">
               <Field 
-                name="username" 
-                placeholder="Username..." 
+                type="email" 
+                name="email" 
+                placeholder="Email..." 
                 className="auth-input"
               />
-              <ErrorMessage name="username" component="span" className="error-message" />
+              <ErrorMessage name="email" component="span" className="error-message" />
 
               <Field 
                 type="password" 
