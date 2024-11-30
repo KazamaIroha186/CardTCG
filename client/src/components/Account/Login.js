@@ -26,7 +26,7 @@ function Login() {
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:8080/users/login", data).then((response) => {
+    axios.post("https://tcg-collection.onrender.com/users/login", data).then((response) => {
       console.log(response.data)
       if (response.data) {
         localStorage.setItem("user-login", JSON.stringify(response.data));
