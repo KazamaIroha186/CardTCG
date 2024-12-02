@@ -21,7 +21,7 @@ function Signup() {
   });
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:3001/auth", data).then(() => {
+    axios.post("https://tcg-collection.onrender.com/user/register", data).then(() => {
       console.log(data);
       navigate("/login");
     }).catch((error) => {

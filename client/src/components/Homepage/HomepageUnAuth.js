@@ -82,7 +82,7 @@ function HomePage() {
   };
 
   const handleCardClick = (card) => {
-    navigate('/cards/${card.cardName}');
+    navigate('https://tcg-collection.onrender.com/cards/{cardID}');
   };
 
   const filteredCards = cards.filter((card) =>

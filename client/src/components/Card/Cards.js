@@ -22,7 +22,7 @@ function Cards() {
 
   const getCardById = async (id) => {
     try {
-      const response = await axios.get(`https://tcg-collection.onrender.com/cards/${id}`);
+      const response = await axios.get(`https://tcg-collection.onrender.com/cards/{cardID}`);
       setSelectedCard(response.data);
     } catch (error) {
       console.error('Error fetching card:', error);

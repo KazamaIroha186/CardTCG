@@ -35,7 +35,7 @@ function Decks() {
 
   const handleEditDeck = async (id) => {
     try {
-      const response = await axios.get(`https://tcg-collection.onrender.com/decks/${id.deckID}/edit`);
+      const response = await axios.get(`https://tcg-collection.onrender.com/decks/{deckID}/edit`);
       if (response.data) {
         navigate(`/deck/${id}/edit`);
       }
@@ -46,7 +46,7 @@ function Decks() {
 
   const handleDeleteDeck = async (id) => {
     try {
-      await axios.delete(`https://tcg-collection.onrender.com/decks/${id.deckID}/delete`);
+      await axios.delete(`https://tcg-collection.onrender.com/decks/{deckID}/delete`);
       // Refresh decks after deletion
       fetchDecks();
     } catch (error) {
@@ -71,7 +71,7 @@ function Decks() {
 
   const removeCardFromDeck = async (deckId, cardId) => {
     try {
-      const response = await axios.delete(`https://tcg-collection.onrender.com/decks/${deckId}/cards/${cardId}`);
+      const response = await axios.delete(`https://tcg-collection.onrender.com/decks/cards/remove`);
       if (response.data.success) {
         // Refresh decks to show updated card count
         fetchDecks();
