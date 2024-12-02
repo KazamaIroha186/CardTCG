@@ -30,7 +30,7 @@ function MyCollection() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-login'));
     if (user) {
-      axios.get(`https://tcg-collection.onrender.com/mycollections/yourcards/${user.userID}`)
+      axios.get(`https://tcg-collection.onrender.com/mycollections/{userID}/yourcards`)
       .then((response) => {
         setCards(response.data.map(card => ({ ...card })));
       })
@@ -41,7 +41,7 @@ function MyCollection() {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate(`/cards/${card.card.cardName}`); // Corrected attribute from card.name to card.name
+    navigate(`/cards/${card.card.cardName}`);
   };
 
   // const filteredCards = cards.filter((card) =>

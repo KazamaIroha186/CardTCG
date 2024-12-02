@@ -47,7 +47,7 @@ function NewDeck() {
   const removeCard = async (cardId, cardName) => {
     try {
       const user = JSON.parse(localStorage.getItem('user-login'));
-      const response = await axios.delete(`https://tcg-collection.onrender.com/decks/${user.deckID}/cards/${cardId}`);
+      const response = await axios.delete(`https://tcg-collection.onrender.com/decks/{deckID}/cards/remove`);
 
       if (response.data.success) {
         setCardCounts(prevCounts => {
