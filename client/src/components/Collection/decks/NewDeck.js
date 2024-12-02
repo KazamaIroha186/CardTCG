@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './NewDeck.css';
+import { useParams, useNavigate } from 'react-router-dom';
 
 function NewDeck() {
+  const navigate = useNavigate();
+  const [listOfCards, setListOfCards] = useState([]);
   const [deckName, setDeckName] = useState('Deck Name');
   const [isNamePopupVisible, setIsNamePopupVisible] = useState(false);
   const [cardCounts, setCardCounts] = useState({});
   const [cards, setCards] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-
   useEffect(() => {
     // Fetch all available cards when component mounts
     axios.get('https://tcg-collection.onrender.com/cards')
@@ -27,18 +29,22 @@ function NewDeck() {
 
   const addCard = async (cardId, cardName) => {
     try {
-      const user = JSON.parse(localStorage.getItem('user-login'));
-      const response = await axios.post('https://tcg-collection.onrender.com/decks/cards/add', {
-        deckID: user.deckID,
-        cardID: cardId
-      });
-
-      if (response.data.success) {
-        setCardCounts(prevCounts => ({
-          ...prevCounts,
-          [cardName]: (prevCounts[cardName] || 0) + 1
-        }));
+      if (listOfCards.length === 0) {
+        setListOfCards([{cardID: cardId, cardquantity: 1}]);
+      } else {
+        const existingCard = listOfCards.find(card => card.cardID === cardId);
+        if (existingCard) {
+          existingCard.cardquantity += 1;
+          setListOfCards([...listOfCards]);
+        } else {
+          setListOfCards([...listOfCards, {cardID: cardId, cardquantity: 1}]);
+        }
       }
+      setCardCounts(prevCounts => ({
+        ...prevCounts,
+        [cardName]: (prevCounts[cardName] || 0) + 1
+      }));
+      
     } catch (error) {
       console.error('Error adding card:', error);
     }
@@ -46,10 +52,21 @@ function NewDeck() {
 
   const removeCard = async (cardId, cardName) => {
     try {
-      const user = JSON.parse(localStorage.getItem('user-login'));
-      const response = await axios.delete(`https://tcg-collection.onrender.com/decks/{deckID}/cards/remove`);
-
-      if (response.data.success) {
+      // Find the card in listOfCards
+      const existingCardIndex = listOfCards.findIndex(card => card.cardID === cardId);
+      
+      if (existingCardIndex !== -1) {
+        const updatedCards = [...listOfCards];
+        if (updatedCards[existingCardIndex].cardquantity > 1) {
+          // Decrease quantity if more than 1
+          updatedCards[existingCardIndex].cardquantity -= 1;
+        } else {
+          // Remove the card if quantity would become 0
+          updatedCards.splice(existingCardIndex, 1);
+        }
+        setListOfCards(updatedCards);
+        
+        // Update the card counts display
         setCardCounts(prevCounts => {
           const newCounts = { ...prevCounts };
           if (newCounts[cardName] > 1) {
@@ -69,6 +86,28 @@ function NewDeck() {
     card.cardName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const saveDeck = async () => {
+    const user = JSON.parse(localStorage.getItem('user-login'));
+    const responseDeck = await axios.post('https://tcg-collection.onrender.com/decks/create', {
+      deckName: deckName,
+      userID: user.userID
+    });
+    if (responseDeck.data) {
+      const deckID = responseDeck.data.id;
+      const responseCards = await axios.post(`https://tcg-collection.onrender.com/decks/cards/add`, {
+        deckID: deckID,
+        listOfCards: listOfCards
+      });
+      if (responseCards.data) {
+        setCardCounts({});
+        navigate('/decks');
+      } else {
+        console.error('Failed to save deck');
+      }
+    } else {
+      console.error('Failed to save deck');
+    }
+  }
   return (
     <div className="deck-builder">
       <div className="card-section">
@@ -99,7 +138,7 @@ function NewDeck() {
         <button className="change-name-button" onClick={handleNameChange}>
           Change Name
         </button>
-        <button className="save-button">Save</button>
+        <button className="save-button" onClick={saveDeck}>Save</button>
         <table>
           <thead>
             <tr>

@@ -7,7 +7,7 @@ function Card({ card, onCardClick, onIncrement, onDecrement }) {
   return (
     <div className="card">
       <img 
-        src={card.image} 
+        src={`/cardimages/${card.id}.png`} 
         alt={card.cardName} 
         className="card-image" 
         onClick={() => onCardClick(card)} 
@@ -76,7 +76,7 @@ function HomePage() {
   const handleDecrement = (card) => {
     const user = JSON.parse(localStorage.getItem('user-login'));
     
-    axios.post('https://tcg-collection.onrender.com/mycollections/{cardID}/{userID}/delete', { cardID: card.id, userID: user.userID })
+    axios.post('https://tcg-collection.onrender.com/mycollections/{cardID}/{userID}/delete', { cardID: card.id , userID: user.userID })
       .then((response) => {
         const updatedCards = cards.map((c) =>
           c.id === card.id && c.quantity > 0 ? { ...c, quantity: c.quantity - 1 } : c

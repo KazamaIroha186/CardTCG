@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import HomepageUA from './components/Homepage/Homepage';
+import Homepage from './components/Homepage/Homepage';
 import Login from './components/Account/Login';
 import Signup from './components/Account/Signup';
 import ForgetPassword from './components/Account/Forgetpass';
@@ -37,7 +37,7 @@ function App() {
             <Route path="/forgetpass" element={<ForgetPassword />} />
             <Route path="/mycollections" element={<MyCollection />} />
             <Route path="/decks" element={<Decks/>} />
-            <Route path="/newdeck" element={<NewDeck/>} />
+            <Route path="/newdeck/:id" element={<NewDeck/>} />
             <Route path="/cards" element={<Cards/>} />
           </Routes>
         </main>

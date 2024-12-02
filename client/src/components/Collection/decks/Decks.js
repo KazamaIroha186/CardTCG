@@ -23,11 +23,7 @@ function Decks() {
 
   const handleNewDeck = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem('user-login'));
-      const response = await axios.post('https://tcg-collection.onrender.com/decks/create', {
-        userID: user.userID
-      });
-      navigate(`/newdeck/${response.data.deckID}`);
+      navigate(`/newdeck/create`);
     } catch (error) {
       console.error('Error creating new deck:', error);
     }
@@ -35,7 +31,7 @@ function Decks() {
 
   const handleEditDeck = async (id) => {
     try {
-      const response = await axios.get(`https://tcg-collection.onrender.com/decks/{deckID}/edit`);
+      const response = await axios.get(`https://tcg-collection.onrender.com/decks/${id}/edit`);
       if (response.data) {
         navigate(`/deck/${id}/edit`);
       }
@@ -81,9 +77,9 @@ function Decks() {
     }
   };
   
-  const filteredDecks = decks.filter(deck =>
-    deck.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredDecks = decks.filter(deck =>
+  //   deck.name.includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <div className="decks-container">
@@ -110,11 +106,11 @@ function Decks() {
           </tr>
         </thead>
         <tbody>
-          {filteredDecks.map((deck) => (
+          {decks.map((deck) => (
             <tr key={deck.id}>
-              <td>{deck.name}</td>
-              <td>{deck.amount}</td>
-              <td>{deck.date}</td>
+              <td>{deck.deckName}</td>
+              <td>{deck.quantity}</td>
+              <td>{new Date(deck.createdAt).toLocaleDateString()}</td>
               <td>
                 <button
                   className="edit-button"
