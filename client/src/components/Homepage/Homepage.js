@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './HomepageUnAuth.css';
+import './Homepage.css';
 import axios from 'axios';
 
 function Card({ card, onCardClick, onIncrement, onDecrement }) {
@@ -60,7 +60,7 @@ function HomePage() {
 
     const user = JSON.parse(localStorage.getItem('user-login'));
     
-    axios.post('https://tcg-collection.onrender.com/mycollections', { cardID: card.id, userID: user.userID })
+    axios.post('https://tcg-collection.onrender.com/mycollections/add', { cardID: card.id, userID: user.userID })
       .then((response) => {
         const updatedCards = cards.map((c) =>
           c.id === card.id ? { ...c, quantity: (c.quantity || 0) + 1 } : c
@@ -74,11 +74,19 @@ function HomePage() {
   };
 
   const handleDecrement = (card) => {
-    const updatedCards = cards.map((c) =>
-      c.cardName === card.cardName && c.quantity > 0 ? { ...c, quantity: c.quantity - 1 } : c
-    );
-    setCards(updatedCards);
-    localStorage.setItem('cardCollection', JSON.stringify(updatedCards));
+    const user = JSON.parse(localStorage.getItem('user-login'));
+    
+    axios.post('https://tcg-collection.onrender.com/mycollections/{cardID}/{userID}/delete', { cardID: card.id, userID: user.userID })
+      .then((response) => {
+        const updatedCards = cards.map((c) =>
+          c.id === card.id && c.quantity > 0 ? { ...c, quantity: c.quantity - 1 } : c
+        );
+        setCards(updatedCards);
+        localStorage.setItem('cardCollection', JSON.stringify(updatedCards));
+      })
+      .catch((error) => {
+        console.error('Error decrementing card quantity:', error);
+      });
   };
 
   const handleCardClick = (card) => {
