@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './MyCollection.css';
 import axios from 'axios';
 
-function Card({ card, onCardClick }) {
+function Card({ card, onCardClick, quantity }) {
   return (
     <div className="card">
       <img 
-        src={card.image} 
-        alt={card.cardName} // Corrected attribute from cardName to name
+        src={`/cardimages/${card.id}.png`} 
+        alt={card.cardName} 
         className="card-image" 
         onClick={() => onCardClick(card)} 
       />
@@ -16,7 +16,7 @@ function Card({ card, onCardClick }) {
         <h3 className="card-name">{card.cardName}</h3> 
         <p className="card-rarity">Rarity: {card.cardRarity}</p> 
         <p className="card-type">Type: {card.cardType}</p> 
-        <p className="card-quantity">Owned: {card.quantity}</p>
+        <p className="card-quantity">Owned: {quantity}</p>
       </div>
     </div>
   );
@@ -41,7 +41,7 @@ function MyCollection() {
   }, []);
 
   const handleCardClick = (card) => {
-    navigate(`/cards/${card.card.cardName}`);
+    navigate(`/cards/${card.cardName}`);
   };
 
   // const filteredCards = cards.filter((card) =>
@@ -84,6 +84,7 @@ function MyCollection() {
                 <Card 
                   key={card.card} 
                   card={card.card} 
+                  quantity={card.quantity}
                   onCardClick={handleCardClick}
                 />
               ))
