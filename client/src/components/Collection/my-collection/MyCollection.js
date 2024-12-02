@@ -30,7 +30,7 @@ function MyCollection() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user-login'));
     if (user) {
-      axios.get(`https://tcg-collection.onrender.com/mycollections/{userID}/yourcards`)
+      axios.get(`https://tcg-collection.onrender.com/mycollections/${user.userID}/yourcards`)
       .then((response) => {
         setCards(response.data.map(card => ({ ...card })));
       })
