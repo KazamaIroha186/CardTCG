@@ -4,7 +4,10 @@ import "./Navbar.css";
 
 const NavbarUnauth = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("User");
+  const [username, setUsername] = useState(() => {
+    const user = JSON.parse(localStorage.getItem('user-login'));
+    return user ? user.username : 'User';
+  });
 
   // Function to log the user out
   const handleLogout = () => {
