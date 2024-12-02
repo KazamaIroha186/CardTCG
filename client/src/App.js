@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import HomepageUA from './components/Homepage/HomepageUnAuth';
+import HomepageUA from './components/Homepage/Homepage';
 import Login from './components/Account/Login';
 import Signup from './components/Account/Signup';
 import ForgetPassword from './components/Account/Forgetpass';
@@ -29,8 +29,8 @@ function App() {
         {!excludedRoutes.includes(location.pathname) && <Sidebar />}
         <main className='main-content'>
           <Routes>
-            <Route path="/home" element={<HomepageUA />} />
-            <Route path="/" element={<HomepageUA />} />
+            <Route path="/home" element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
 
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
