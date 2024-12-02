@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 
 import Homepage from './components/Homepage/Homepage';
 import Login from './components/Account/Login';
+import LoginTest from './components/logintest/logintest';
 import Signup from './components/Account/Signup';
 import ForgetPassword from './components/Account/Forgetpass';
 import MyCollection from './components/Collection/my-collection/MyCollection';

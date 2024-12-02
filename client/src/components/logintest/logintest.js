@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-
+import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axios from "axios";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-
+import { useSetRecoilState } from "recoil";
 import loginAtom from "../../atom-user/user.atom";
-import './Login.css';
-
+import './logintest.css';
 
 function Login() {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const setLogin = useSetRecoilState(loginAtom);
   const navigate = useNavigate();
   
   const initialValues = {
     email: "",
     password: "",
+    rememberMe: false
   };
 
   const validationSchema = Yup.object().shape({
@@ -26,20 +23,22 @@ function Login() {
   });
 
   const onSubmit = (data) => {
-    axios.post("https://tcg-collection.onrender.com/users/login", data).then((response) => {
-      console.log(response.data)
-      if (response.data) {
-        localStorage.setItem("user-login", JSON.stringify(response.data));
-        setLogin(true);
-        navigate("/home");
-
-      } else {
-        alert("Login failed! Please check your credentials.");
-      }
-    }).catch((error) => {
-      console.error("Error during login:", error);
-      alert("An error occurred during login.");
-    });
+    axios.post("https://tcg-collection.onrender.com/users/login", data)
+      .then((response) => {
+        if (response.data) {
+          if (data.rememberMe) {
+            localStorage.setItem("user-login", JSON.stringify(response.data));
+          }
+          setLogin(true);
+          navigate("/home");
+        } else {
+          alert("Login failed! Please check your credentials.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
+        alert("An error occurred during login.");
+      });
   };
 
   return (
@@ -87,12 +86,6 @@ function Login() {
             </Form>
           </Formik>
         </div>
-        {/* <div className="auth-image-section" style={{
-          backgroundImage: `url(${require('../../bg-image/background-image.jpg')})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}>
-        </div> */}
       </div>
     </div>
   );

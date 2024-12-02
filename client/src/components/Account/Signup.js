@@ -69,7 +69,9 @@ function Signup() {
             </Form>
           </Formik>
         </div>
-        <div className="auth-image-section"></div>
+        {/* <div className="auth-image-section">
+          <img src={require('../../bg-image/background-image.jpg')} alt="Login" className="auth-image" />
+        </div> */}
       </div>
     </div>
   );
