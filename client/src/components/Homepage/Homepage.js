@@ -120,10 +120,9 @@ function HomePage() {
               onChange={(e) => setFilter(e.target.value)}
             >
               <option value="">Filter by Rarity</option>
-              <option value="Rare">Rare</option>
-              <option value="Uncommon">Uncommon</option>
-              <option value="Common">Common</option>
-              <option value="Epic">Epic</option>
+              <option value="Gold">Gold</option>
+              <option value="Full Art">Full Art</option>
+              <option value="Illustration Rare">Illustration Rare</option>
             </select>
           </div>
 
