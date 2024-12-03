@@ -42,7 +42,7 @@ function Decks() {
 
   const handleDeleteDeck = async (id) => {
     try {
-      await axios.delete(`https://tcg-collection.onrender.com/decks/{deckID}/delete`);
+      await axios.delete(`https://tcg-collection.onrender.com/decks/${id}/delete`);
       // Refresh decks after deletion
       fetchDecks();
     } catch (error) {
